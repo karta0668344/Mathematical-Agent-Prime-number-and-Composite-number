@@ -11,23 +11,24 @@
 
     <style>
         body {
-            /* 套用新字體：優先使用 Fredoka，中文自動退回到 Noto Sans TC */
+            /* 2. 套用新字體：優先使用 Fredoka，中文自動退回到 Noto Sans TC */
             font-family: 'Fredoka', 'Noto Sans TC', sans-serif;
-            background-color: #2c3e50; 
+            
+            background-color: #2c3e50; /* 改為深色背景，更有特務氛圍 */
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: 20px;
             margin: 0;
-            color: #ecf0f1;
+            color: #ecf0f1; /* 文字改為淺色 */
         }
 
         h1 {
-            color: #f1c40f; 
+            color: #f1c40f; /* 金黃色標題 */
             margin-bottom: 10px;
             text-align: center;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-            font-weight: 700; 
+            font-weight: 700; /* 標題加粗 */
             letter-spacing: 1px;
         }
 
@@ -37,10 +38,10 @@
         }
 
         .game-info {
-            background-color: #34495e; 
+            background-color: #34495e; /* 深藍灰色背景 */
             padding: 20px;
             border-radius: 8px;
-            border-left: 5px solid #e74c3c; 
+            border-left: 5px solid #e74c3c; /* 紅色邊框示警 */
             margin-bottom: 20px;
             max-width: 900px;
             line-height: 1.6;
@@ -52,12 +53,12 @@
             margin-bottom: 15px;
             padding-bottom: 10px;
             border-bottom: 1px solid #7f8c8d;
-            display: flex; 
+            display: flex; /* 使用 Flexbox 進行對齊 */
             gap: 15px;
         }
         
         .mission-icon {
-            flex-shrink: 0; 
+            flex-shrink: 0; /* 防止 emoji 被壓縮 */
             font-size: 1.2em;
             padding-top: 5px;
         }
@@ -67,14 +68,15 @@
         }
 
         .mission-text {
-            margin-top: 5px; 
+            margin-top: 5px; /* 與標題保持一點距離 */
             display: block;
         }
         
+        /* 操作指引列表樣式，確保換行對齊 */
         .instruction-list {
             margin-top: 5px;
             margin-bottom: 0;
-            padding-left: 24px; 
+            padding-left: 24px; /* 數字縮排空間 */
         }
         .instruction-list li {
             margin-bottom: 8px;
@@ -83,14 +85,14 @@
         .legend {
             margin-top: 10px;
             display: flex;
-            gap: 30px; 
+            gap: 30px; /* 增加間距讓兩組分開一點 */
             font-weight: bold;
             background: #ecf0f1;
             padding: 10px;
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
             color: #2c3e50;
-            justify-content: center; 
+            justify-content: center; /* 居中圖例 */
         }
         
         .legend-item {
@@ -113,7 +115,7 @@
         .cabinet-section {
             flex: 1.5;
             min-width: 340px;
-            background-color: #95a5a6; 
+            background-color: #95a5a6; /* 鐵灰色櫃子 */
             padding: 15px;
             border-radius: 15px;
             box-shadow: inset 0 0 30px rgba(0,0,0,0.5), 5px 5px 20px rgba(0,0,0,0.4);
@@ -171,7 +173,7 @@
             border-radius: 4px;
             text-align: center;
             font-size: 16px;
-            font-weight: bold; 
+            font-weight: bold; /* 讓字體更明顯 */
             text-transform: uppercase;
             color: #2c3e50;
             outline: none;
@@ -218,8 +220,10 @@
             gap: 3px;
             flex-wrap: wrap;
             justify-content: center;
+            /* 取消固定的 max-width，讓 3 顆球可以一排 */
         }
 
+        /* 只有當需要強制 2x2 排列時才加上此 Class (4顆球時) */
         .balls-container.wrap-grid {
             max-width: 55px; 
         }
@@ -254,7 +258,7 @@
         }
 
         .morse-chart, .answer-section {
-            background-color: #ecf0f1; 
+            background-color: #ecf0f1; /* 淺灰色面板 */
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
@@ -319,6 +323,7 @@
             font-size: 12px;
         }
 
+        /* 解鎖面板樣式 */
         .unlock-grid {
             display: grid;
             grid-template-columns: 60px 1fr 80px 1.5fr; 
@@ -347,6 +352,7 @@
             color: #2c3e50;
         }
 
+        /* 隱藏數字輸入框的上下箭頭 */
         input[type=number]::-webkit-outer-spin-button,
         input[type=number]::-webkit-inner-spin-button {
             -webkit-appearance: none;
@@ -377,6 +383,7 @@
             color: #95a5a6;
         }
 
+        /* 側邊欄互動顯示板 */
         .sidebar-interactive-board {
             background-color: #34495e;
             border-radius: 5px;
@@ -394,6 +401,7 @@
         .table-dot { width: 6px; height: 6px; background-color: #3498db; border-radius: 50%; }
         .table-dash { width: 14px; height: 6px; background-color: #e74c3c; border-radius: 3px; }
 
+        /* 最終謎題區塊 */
         .final-challenge {
             margin-top: 20px;
             padding: 15px;
@@ -455,6 +463,7 @@
             box-shadow: 0 0 0 #219150;
         }
 
+        /* 彈出視窗樣式 */
         .modal {
             display: none;
             position: fixed;
@@ -464,7 +473,7 @@
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgba(0,0,0,0.7);
+            background-color: rgba(0,0,0,0.7); /* 深色背景遮罩 */
             justify-content: center;
             align-items: center;
             animation: fadeIn 0.3s;
@@ -512,6 +521,7 @@
             cursor: pointer;
         }
 
+        /* 彈窗內容樣式 */
         .modal-title {
             font-size: 1.5rem;
             margin-bottom: 15px;
@@ -538,11 +548,11 @@
 
 <div class="game-info">
     <div class="mission-brief">
-        <div class="mission-icon">🕵️‍♂️</div>
         <div class="mission-content">
             <img src="Beginning.png" style="width: 100%; max-width: 500px; display: block; margin: 0 auto 10px auto; border-radius: 5px;" alt="任務開始">
             
-            <strong>任務代號：質數與合數</strong>
+            <strong style="display: block; text-align: center;">任務代號：質數與合數</strong>
+            
             <div class="mission-text">
                 特務你好！我們已成功潛入壞蛋的豪宅。據情報顯示，他把搶來的珠寶放在特製的 30 格密碼保險箱裡，並用一把鑰匙鎖上最外層的玻璃櫃。<br>
                 桌上有編號 0～9 的 10 把鑰匙以及一張摩斯密碼表，請你根據操作指引找出正確編號的鑰匙。<br>
