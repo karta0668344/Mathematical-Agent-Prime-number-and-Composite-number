@@ -57,8 +57,12 @@
             gap: 15px;
         }
         
-        /* 這裡原本有一個 .mission-icon 的設定，因為我要把 icon 刪掉，所以這邊的 style 留著也沒關係，或者可以刪除 */
-        
+        .mission-icon {
+            flex-shrink: 0; /* 防止 emoji 被壓縮 */
+            font-size: 1.2em;
+            padding-top: 5px;
+        }
+
         .mission-content {
             flex-grow: 1;
         }
@@ -672,6 +676,10 @@
     <source src="bgm.m4a" type="audio/mp4">
 </audio>
 
+<audio id="successSound">
+    <source src="key.mp3" type="audio/mpeg">
+</audio>
+
 <button id="musicBtn" onclick="toggleMusic()" style="
     position: fixed; 
     bottom: 20px; 
@@ -1036,89 +1044,14 @@
         }
     }
 
-    // Sound Effects using Web Audio API
+    // Sound Effects using Web Audio API (Modified to use key.mp3 for success)
     function playSuccessSound() {
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        if (!AudioContext) return;
-        const ctx = new AudioContext();
-        const now = ctx.currentTime;
-
-        // create white noise buffer for paper texture
-        const bufferSize = ctx.sampleRate * 2; // 2 seconds buffer
-        const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-        const data = buffer.getChannelData(0);
-        for (let i = 0; i < bufferSize; i++) {
-            data[i] = Math.random() * 2 - 1;
+        const sound = document.getElementById('successSound');
+        if (sound) {
+            sound.currentTime = 0; // 每次播放都重頭開始
+            sound.volume = 1.0;    // 確保音量足夠
+            sound.play().catch(error => console.log("播放失敗: " + error));
         }
-
-        // Function to simulate one bill flip (swish sound)
-        function playBillFlip(time) {
-            const source = ctx.createBufferSource();
-            source.buffer = buffer;
-
-            // Filter: Lower frequency for a "thicker/lower" paper sound
-            const filter = ctx.createBiquadFilter();
-            filter.type = 'bandpass';
-            filter.frequency.value = 600 + Math.random() * 400; // Lowered from 1200+
-            filter.Q.value = 1.0; // Slightly sharper resonance
-
-            const gain = ctx.createGain();
-            // Envelope: Sharp attack, fast decay
-            gain.gain.setValueAtTime(0, time);
-            gain.gain.linearRampToValueAtTime(1.0, time + 0.005); // Faster attack
-            gain.gain.exponentialRampToValueAtTime(0.01, time + 0.06); // Faster decay
-
-            source.connect(filter);
-            filter.connect(gain);
-            gain.connect(ctx.destination);
-
-            source.start(time);
-            source.stop(time + 0.1);
-        }
-
-        // Play a sequence: Faster speed
-        const billCount = 15; // More bills
-        const speed = 0.05; // Faster interval (was 0.09)
-        
-        for (let i = 0; i < billCount; i++) {
-            playBillFlip(now + i * speed + Math.random() * 0.01);
-        }
-
-        // "Ca-ching!" - Crisper, higher pitch
-        const endTime = now + billCount * speed + 0.1;
-        
-        // 1. Main Ding (Triangle wave for metallic crispness)
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        
-        osc.type = 'triangle'; 
-        osc.frequency.setValueAtTime(3500, endTime); // Higher start pitch
-        osc.frequency.exponentialRampToValueAtTime(3500, endTime + 0.5); // Steady pitch for clarity
-        
-        gain.gain.setValueAtTime(0, endTime);
-        gain.gain.linearRampToValueAtTime(0.5, endTime + 0.01); // Sharp attack
-        gain.gain.exponentialRampToValueAtTime(0.001, endTime + 1.5); // Long ringing tail
-        
-        osc.start(endTime);
-        osc.stop(endTime + 1.5);
-
-        // 2. Sparkle overlay (High Sine)
-        const osc2 = ctx.createOscillator();
-        const gain2 = ctx.createGain();
-        osc2.connect(gain2);
-        gain2.connect(ctx.destination);
-        
-        osc2.type = 'sine';
-        osc2.frequency.setValueAtTime(5000, endTime);
-        
-        gain2.gain.setValueAtTime(0, endTime);
-        gain2.gain.linearRampToValueAtTime(0.2, endTime + 0.01);
-        gain2.gain.exponentialRampToValueAtTime(0.001, endTime + 0.3); // Short sparkle
-        
-        osc2.start(endTime);
-        osc2.stop(endTime + 0.3);
     }
 
     function playErrorSound() {
@@ -1192,7 +1125,7 @@
         }
 
         if (allCorrect) {
-            playSuccessSound(); // Play unlock sound
+            playSuccessSound(); // Play custom key.mp3 sound
             modalMessage.innerHTML = `
                 <img src="win.png" style="max-width: 200px; height: auto; margin-bottom: 15px;" alt="勝利">
                 <div class="modal-title success-style">🎉 任務成功！<br>玻璃櫃已開啟，請特務加快速度奪回珠寶！</div>
